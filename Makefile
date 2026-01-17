@@ -60,10 +60,10 @@ gensin: gensin.c
 
 test: test-sincos test-lfo
 
-tests/lfo_verify: tests/lfo_verify.o
-tests/lfo_verify.o: $(HEADERS)
-test-lfo: tests/lfo_verify
-	tests/lfo_verify
+tests/lfo: tests/lfo.o
+tests/lfo.o: $(HEADERS)
+test-lfo: tests/lfo
+	tests/lfo
 
 tests/sincos: tests/sincos.o
 tests/sincos.o: $(HEADERS)
