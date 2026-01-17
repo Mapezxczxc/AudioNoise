@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+#include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,28 +73,93 @@ static inline int make_one_noise(int in, int out, struct effect *eff)
 
 int main(int argc, char **argv)
 {
-	float pot[4];
-	struct effect *eff = &effects[0];
+	float pot[4] = { 0.5, 0.5, 0.5, 0.5 };
+	struct effect *eff = NULL;
+	int input = -1, output = -1;
+	int potnr = 0;
 
-	if (argc < 6)
-		return 1;
+	for (int i = 1; i < argc; i++) {
+		const char *arg = argv[i];
+		char *endptr;
 
-	const char *name = argv[1];
+		// Is the argument a floating point number?
+		// The we assume it's a default pot value
+		float val = strtof(arg, &endptr);
+		if (endptr != arg) {
+			if (potnr < 4) {
+				pot[potnr++] = val;
+				continue;
+			}
+			fprintf(stderr, "Too many pot values\n");
+			exit(1);
+		}
 
-	for (int i = 0; i < ARRAY_SIZE(effects); i++) {
-		if (!strcmp(name, effects[i].name))
-			eff = effects+i;
+		// Is it the name of an effect and we don't have one yet?
+		if (!eff) {
+			for (int i = 0; i < ARRAY_SIZE(effects); i++) {
+				if (!strcmp(arg, effects[i].name))
+					eff = effects+i;
+			}
+			if (eff)
+				continue;
+		}
+
+		if (input < 0) {
+			// We assume first filename is an input file
+			if (!strcmp(arg, "-")) {
+				input = 0;
+				continue;
+			}
+
+			int fd = open(arg, O_RDONLY);
+			if (fd < 0) {
+				perror(arg);
+				exit(1);
+			}
+			input = fd;
+			continue;
+		}
+
+		if (output < 0) {
+			// We assume second filename is an output file
+			if (!strcmp(arg, "-")) {
+				output = 1;
+				continue;
+			}
+
+			int fd = open(arg, O_CREAT | O_WRONLY, 0666);
+			if (fd < 0) {
+				perror(arg);
+				exit(1);
+			}
+			output = fd;
+			continue;
+		}
+
+		fprintf(stderr, "Unrecognized option '%s'\n", arg);
+		exit(1);
 	}
 
-	for (int i = 0; i < 4; i++)
-		pot[i] = atof(argv[2+i]);
+	if (input < 0)
+		input = 0;
+
+	if (output < 0)
+		output = 1;
+
+#ifdef F_SETPIPE_SZ
+	// Limit the output buffer size if we are
+	// writing to a pipe. At least on Linux,
+	// because I have no idea how to do it for
+	// anything else
+	fcntl(output, F_SETPIPE_SZ, 4096);
+#endif
 
 	fprintf(stderr, "Playing %s: ",	eff->name);
 	eff->describe(pot);
 
 	for (;;) {
 		eff->init(pot);
-		if (make_one_noise(0, 1, eff) <= 0)
+		if (make_one_noise(input, output, eff) <= 0)
 			break;
 	}
 	return 0;

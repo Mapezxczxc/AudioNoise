@@ -29,7 +29,7 @@ visualize: input.raw output.raw magnitude.raw outmagnitude.raw
 	ffmpeg -y -v fatal -i $< -f s32le -ar 48000 -ac 1 $@
 
 $(effects): input.raw convert
-	./convert $@ $($@_defaults) < input.raw > output.raw
+	./convert $@ $($@_defaults) input.raw output.raw
 	ffmpeg -y -v fatal -f s32le -ar 48000 -ac 1 -i output.raw -f mp3 $@.mp3
 	$(PLAY) < output.raw
 
@@ -39,13 +39,13 @@ convert.o: $(HEADERS)
 convert: convert.o
 
 output.raw: input.raw convert
-	./convert echo $(echo_defaults) < input.raw > output.raw
+	./convert echo $(echo_defaults) input.raw output.raw
 
 magnitude.raw: input.raw convert
-	./convert magnitude 0.1 0.0001 0 0 < input.raw > magnitude.raw
+	./convert magnitude 0.1 0.0001 0 0 input.raw magnitude.raw
 
 outmagnitude.raw: output.raw convert
-	./convert magnitude 0.1 0.0001 0 0 < output.raw > outmagnitude.raw
+	./convert magnitude 0.1 0.0001 0 0 output.raw outmagnitude.raw
 
 input.raw: BassForLinus.mp3
 	ffmpeg -y -v fatal -i $< -f s32le -ar 48000 -ac 1 $@
