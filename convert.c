@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 #include <math.h>
 
 #define SAMPLES_PER_SEC (48000.0)
@@ -71,9 +72,34 @@ static inline int make_one_noise(int in, int out, struct effect *eff)
 	return nr * 4;
 }
 
+static int pot_control = -1;
+static float pots[4] = { 0.5, 0.5, 0.5, 0.5 };
+
+static void *modify_pots(void *arg)
+{
+	struct effect *eff = arg;
+
+	for (;;) {
+		char buf[5];
+		int n = read(pot_control, buf, sizeof(buf));
+		if (n <= 0)
+			return NULL;
+		switch (buf[0]) {
+		case 'p':
+			unsigned int idx = buf[1]-'0';
+			unsigned int d1 = buf[2]-'0';
+			unsigned int d2 = buf[3]-'0';
+			if (idx > 3 || d1 > 9 || d2 > 9)
+				break;
+			pots[idx] = (d1*10+d2) / 100.0;
+			eff->describe(pots);
+			break;
+		}
+	}
+}
+
 int main(int argc, char **argv)
 {
-	float pot[4] = { 0.5, 0.5, 0.5, 0.5 };
 	struct effect *eff = NULL;
 	int input = -1, output = -1;
 	int potnr = 0;
@@ -82,12 +108,20 @@ int main(int argc, char **argv)
 		const char *arg = argv[i];
 		char *endptr;
 
+		if (!strncmp(arg, "--control=", 10)) {
+			pot_control = strtol(arg+10, &endptr, 0);
+			if (endptr != arg+10)
+				continue;
+			fprintf(stderr, "Bad control fd input (%s)\n", arg);
+			exit(1);
+		}
+
 		// Is the argument a floating point number?
 		// The we assume it's a default pot value
 		float val = strtof(arg, &endptr);
 		if (endptr != arg) {
 			if (potnr < 4) {
-				pot[potnr++] = val;
+				pots[potnr++] = val;
 				continue;
 			}
 			fprintf(stderr, "Too many pot values\n");
@@ -155,12 +189,19 @@ int main(int argc, char **argv)
 #endif
 
 	fprintf(stderr, "Playing %s: ",	eff->name);
-	eff->describe(pot);
+	eff->describe(pots);
+
+	pthread_t pot_thread;
+	if (pot_control >= 0)
+		pthread_create(&pot_thread, NULL, modify_pots, eff);
 
 	for (;;) {
-		eff->init(pot);
+		eff->init(pots);
 		if (make_one_noise(input, output, eff) <= 0)
 			break;
 	}
+
+	if (pot_control >= 0)
+		pthread_cancel(pot_thread);
 	return 0;
 }
